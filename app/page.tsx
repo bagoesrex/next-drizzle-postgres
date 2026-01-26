@@ -1,35 +1,21 @@
 "use client";
 
-import { getPosts, Post } from "@/actions/posts";
-import { useEffect, useState } from "react";
+import { usePosts } from "@/hooks/use-posts";
 
 export default function HomePage() {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function loadPosts() {
-      const res = await getPosts();
-
-      if (res.success) {
-        setPosts(res.data!);
-      } else {
-        setError(res.message!);
-      }
-    }
-
-    loadPosts();
-  }, []);
+  const { data: posts, isLoading, isError, error } = usePosts();
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4">
-      <h1 className="text-2xl font-bold underline underline-offset-5">Posts</h1>
+      <h1 className="text-2xl font-bold underline underline-offset-4">Posts</h1>
 
-      {error && <p className="text-red-500">{error}</p>}
+      {isLoading && <p className="text-gray-500">Loading...</p>}
 
-      {!error && posts.length === 0 && <p className="text-gray-500">Belum ada data post</p>}
+      {isError && <p className="text-red-500">{(error as Error).message}</p>}
 
-      {posts.length > 0 && (
+      {!isLoading && posts?.length === 0 && <p className="text-gray-500">Belum ada data post</p>}
+
+      {posts && posts.length > 0 && (
         <div>
           {posts.map((post) => (
             <div key={post.id} className="py-2">
