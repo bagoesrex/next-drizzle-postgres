@@ -1,42 +1,43 @@
 "use client";
 
-import { getUsers, User } from "@/actions/users";
+import { getPosts, Post } from "@/actions/posts";
 import { useEffect, useState } from "react";
 
 export default function HomePage() {
-  const [users, setUsers] = useState<User[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function loadUsers() {
-      const res = await getUsers();
+    async function loadPosts() {
+      const res = await getPosts();
 
       if (res.success) {
-        setUsers(res.data!);
+        setPosts(res.data!);
       } else {
         setError(res.message!);
       }
     }
 
-    loadUsers();
+    loadPosts();
   }, []);
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center justify-center gap-4">
-      <h1 className="text-2xl font-bold">Next Drizzle Postgres</h1>
+      <h1 className="text-2xl font-bold underline underline-offset-5">Posts</h1>
 
       {error && <p className="text-red-500">{error}</p>}
 
-      {!error && users.length === 0 && <p className="text-gray-500">Belum ada data user</p>}
+      {!error && posts.length === 0 && <p className="text-gray-500">Belum ada data post</p>}
 
-      {users.length > 0 && (
-        <ul>
-          {users.map((user) => (
-            <li key={user.id}>
-              {user.name} – {user.email}
-            </li>
+      {posts.length > 0 && (
+        <div>
+          {posts.map((post) => (
+            <div key={post.id} className="py-2">
+              <h2 className="font-bold">{post.title}</h2>
+              <p className="text-sm">{post.content}</p>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
