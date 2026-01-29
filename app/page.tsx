@@ -2,6 +2,7 @@
 
 import { usePosts } from "@/hooks/use-posts";
 import MaxWidthWrapper from "@/components/layout/max-width-wrapper";
+import PostCard from "@/components/posts/post-card";
 
 export default function HomePage() {
   const { data: posts, isLoading, isError, error } = usePosts();
@@ -17,12 +18,9 @@ export default function HomePage() {
         {!isLoading && posts?.length === 0 && <p className="text-gray-500">Belum ada data post</p>}
 
         {posts && posts.length > 0 && (
-          <div>
+          <div className="space-y-6">
             {posts.map((post) => (
-              <div key={post.id} className="py-2">
-                <h2 className="font-bold">{post.title}</h2>
-                <p className="text-sm">{post.content}</p>
-              </div>
+              <PostCard post={post} key={post.id} />
             ))}
           </div>
         )}
