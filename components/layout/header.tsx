@@ -1,5 +1,8 @@
+"use client";
+
 import Link from "next/link";
 import { MessageSquare } from "lucide-react";
+import CreatePostDialog from "../posts/create-post-dialog";
 
 export default function Header() {
   return (
@@ -14,6 +17,7 @@ export default function Header() {
             <p className="text-muted-foreground text-xs">Share your posts and comments</p>
           </div>
         </Link>
+        <CreatePostDialog />
       </div>
     </header>
   );
